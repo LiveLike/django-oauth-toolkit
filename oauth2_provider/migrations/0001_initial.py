@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('redirect_uris', models.TextField(help_text='Allowed URIs list, space separated', blank=True, validators=[oauth2_provider.validators.validate_uris])),
                 ('client_type', models.CharField(max_length=32, choices=[('confidential', 'Confidential'), ('public', 'Public')])),
                 ('authorization_grant_type', models.CharField(max_length=32, choices=[('authorization-code', 'Authorization code'), ('implicit', 'Implicit'), ('password', 'Resource owner password-based'), ('client-credentials', 'Client credentials')])),
-                ('client_secret', models.CharField(default=oauth2_provider.generators.generate_client_secret, max_length=255, db_index=True, blank=True)),
+                ('client_secret', models.CharField(default=oauth2_provider.generators.generate_client_secret, max_length=191, db_index=True, blank=True)),
                 ('name', models.CharField(max_length=255, blank=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
             name='AccessToken',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('token', models.CharField(max_length=255, db_index=True)),
+                ('token', models.CharField(max_length=191, db_index=True)),
                 ('expires', models.DateTimeField()),
                 ('scope', models.TextField(blank=True)),
                 ('application', models.ForeignKey(to=oauth2_settings.APPLICATION_MODEL)),
@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             name='Grant',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('code', models.CharField(max_length=255, db_index=True)),
+                ('code', models.CharField(max_length=191, db_index=True)),
                 ('expires', models.DateTimeField()),
                 ('redirect_uri', models.CharField(max_length=255)),
                 ('scope', models.TextField(blank=True)),
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
             name='RefreshToken',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('token', models.CharField(max_length=255, db_index=True)),
+                ('token', models.CharField(max_length=191, db_index=True)),
                 ('access_token', models.OneToOneField(related_name='refresh_token', to='oauth2_provider.AccessToken')),
                 ('application', models.ForeignKey(to=oauth2_settings.APPLICATION_MODEL)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
