@@ -123,8 +123,16 @@ class AbstractApplication(models.Model):
         return self.name or self.client_id
 
 
+class ApplicationManager(models.Manager):
+    def get_by_natural_key(self, client_id):
+        return self.get(client_id=client_id)
+
+
 class Application(AbstractApplication):
-    pass
+    objects = ApplicationManager()
+
+    def natural_key(self):
+        return (self.client_id,)
 
 # Add swappable like this to not break django 1.4 compatibility
 Application._meta.swappable = 'OAUTH2_PROVIDER_APPLICATION_MODEL'
